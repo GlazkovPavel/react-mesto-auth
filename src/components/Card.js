@@ -14,7 +14,6 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }){
   function handleDeleteClick() {
     onCardDelete(card)
   }
-
   // Определяем, являемся ли мы владельцем текущей карточки
   const isOwn = card.owner._id === currentUser._id;
 
