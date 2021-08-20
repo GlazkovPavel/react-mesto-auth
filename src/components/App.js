@@ -8,6 +8,9 @@ import EditProfilePopup from "./EditProfilePopup";
 import api from "../utils/api";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import { Route, Switch } from 'react-router-dom';
+import {Login} from "./Login";
+import {Register} from "./Register";
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -130,6 +133,8 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
           <Header />
+        <Switch>
+        <Route exact path="/">
           <Main
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
@@ -139,8 +144,15 @@ function App() {
               onCardDelete={handleCardDelete}
               cards={cards}
               setCards={setCards}
-
           />
+        </Route>
+        <Route path="/sign-up">
+          <Register />
+        </Route>
+        <Route path="/sign-in">
+          <Login />
+        </Route>
+        </Switch>
           <AddPlacePopup
               isLoading={isLoading}
               onChangeLoading={changeLoading}
