@@ -11,6 +11,7 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import { Route, Switch } from 'react-router-dom';
 import {Login} from "./Login";
 import {Register} from "./Register";
+import {ProtectedRoute} from "./ProtectedRoute";
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -21,6 +22,11 @@ function App() {
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [currentUser, setCurrentUser] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(false)
+    const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+
+  const handleSetIsLoggedIn = () => {
+      setIsLoggedIn(true)
+  }
 
     const changeLoading = () =>{
       setIsLoading(true)
@@ -134,18 +140,19 @@ function App() {
       <div className="page">
           <Header />
         <Switch>
-        <Route exact path="/">
-          <Main
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              cards={cards}
-              setCards={setCards}
-          />
-        </Route>
+        <ProtectedRoute
+            exact path="/"
+            isLoggedIn={isLoggedIn}
+            component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards}
+            setCards={setCards}
+        />
         <Route path="/sign-up">
           <Register />
         </Route>
