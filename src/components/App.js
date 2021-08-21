@@ -8,6 +8,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import api from "../utils/api";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import {AuthContext} from "../contexts/AuthContext";
 import { Route, Switch } from 'react-router-dom';
 import {Login} from "./Login";
 import {Register} from "./Register";
@@ -24,8 +25,8 @@ function App() {
     const [isLoading, setIsLoading] = React.useState(false)
     const [isLoggedIn, setIsLoggedIn] = React.useState(true)
 
-  const handleSetIsLoggedIn = () => {
-      setIsLoggedIn(true)
+  const toggle = () => {
+      setIsLoggedIn((prevLoggedIn) => { return !prevLoggedIn})
   }
 
     const changeLoading = () =>{
@@ -137,56 +138,58 @@ function App() {
 
   return (
       <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-          <Header />
-        <Switch>
-        <ProtectedRoute
-            exact path="/"
-            isLoggedIn={isLoggedIn}
-            component={Main}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
-            setCards={setCards}
-        />
-        <Route path="/sign-up">
-          <Register />
-        </Route>
-        <Route path="/sign-in">
-          <Login />
-        </Route>
-        </Switch>
-          <AddPlacePopup
-              isLoading={isLoading}
-              onChangeLoading={changeLoading}
-              overlay={overlayClick}
-              onAddPlace={handleAddPlaceSubmit}
-              isOpen={isAddPlacePopupOpen}
-              onClose={closeAllPopups}
-          />
-          <EditAvatarPopup
-              isLoading={isLoading}
-              onChangeLoading={changeLoading}
-              overlay={overlayClick}
-              onUpdateAvatar={handleUpdateAvatar}
-              isOpen={isEditAvatarPopupOpen}
-              onClose={closeAllPopups}
-          />
-          <EditProfilePopup
-              isLoading={isLoading}
-              onChangeLoading={changeLoading}
-              overlay={overlayClick}
-              onUpdateUser={handleUpdateUser}
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups}
-          />
-          <ImagePopup overlay={overlayClick} isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
-          <Footer />
-      </div>
+        <AuthContext.Provider value={isLoggedIn}>
+          <div className="page">
+            <button onClick={toggle}>Toggle {isLoggedIn ? 'ON' : 'OFF'}</button>
+            <Header />
+            <Switch>
+              <ProtectedRoute
+                  exact path="/"
+                  component={Main}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  cards={cards}
+                  setCards={setCards}
+              />
+              <Route path="/sign-up">
+                <Register />
+              </Route>
+              <Route path="/sign-in">
+                <Login />
+              </Route>
+            </Switch>
+            <AddPlacePopup
+                isLoading={isLoading}
+                onChangeLoading={changeLoading}
+                overlay={overlayClick}
+                onAddPlace={handleAddPlaceSubmit}
+                isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopups}
+            />
+            <EditAvatarPopup
+                isLoading={isLoading}
+                onChangeLoading={changeLoading}
+                overlay={overlayClick}
+                onUpdateAvatar={handleUpdateAvatar}
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+            />
+            <EditProfilePopup
+                isLoading={isLoading}
+                onChangeLoading={changeLoading}
+                overlay={overlayClick}
+                onUpdateUser={handleUpdateUser}
+                isOpen={isEditProfilePopupOpen}
+                onClose={closeAllPopups}
+            />
+            <ImagePopup overlay={overlayClick} isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
+            <Footer />
+          </div>
+        </AuthContext.Provider>
       </CurrentUserContext.Provider>
   );
 
