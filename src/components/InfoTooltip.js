@@ -1,7 +1,7 @@
 import React from "react";
 import {AuthContext} from "../contexts/AuthContext";
-import fail from '../images/fail.png'
-import success from '../images/success.png'
+import success from '../images/success.svg'
+import fail from '../images/Unionfail.svg'
 
 export function InfoTooltip(){
 

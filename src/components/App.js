@@ -163,6 +163,9 @@ function App() {
                 <Login />
               </Route>
             </Switch>
+
+            <InfoTooltip />
+
             <AddPlacePopup
                 isLoading={isLoading}
                 onChangeLoading={changeLoading}
@@ -188,7 +191,6 @@ function App() {
                 onClose={closeAllPopups}
             />
             <ImagePopup overlay={overlayClick} isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
-            <InfoTooltip />
             <Footer />
           </div>
         </AuthContext.Provider>
