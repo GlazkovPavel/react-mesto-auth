@@ -13,6 +13,7 @@ import { Route, Switch } from 'react-router-dom';
 import {Login} from "./Login";
 import {Register} from "./Register";
 import {ProtectedRoute} from "./ProtectedRoute";
+import {InfoTooltip} from "./InfoTooltip";
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -187,6 +188,7 @@ function App() {
                 onClose={closeAllPopups}
             />
             <ImagePopup overlay={overlayClick} isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
+            <InfoTooltip />
             <Footer />
           </div>
         </AuthContext.Provider>
