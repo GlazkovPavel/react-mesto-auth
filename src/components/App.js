@@ -9,11 +9,12 @@ import api from "../utils/api";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import {AuthContext} from "../contexts/AuthContext";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import {Login} from "./Login";
 import {Register} from "./Register";
 import {ProtectedRoute} from "./ProtectedRoute";
 import {InfoTooltip} from "./InfoTooltip";
+import * as apiAuth from "../utils/apiAuth"
 
 function App() {
     const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
@@ -25,6 +26,52 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(false)
     const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+
+    const history = useHistory();
+
+  function register(email, password) {
+    apiAuth.register(email, password)
+        .then((res) => {
+          if (!res.ok) { // если статус ответа false
+            //setIsEnter(true); //открываем всплывающее окошко
+            //setErrorReg(true); //меняем стейт, что есть ошибка
+            console.log('ошибка отправки регистрации')
+          } else {
+            //setIsEnter(true); //если статус true, то все равно всплавает окошко
+            //setErrorReg(false); // но наличие ошибки false
+            history.push('/sign-in');
+          }
+        })
+        .catch((err) => {
+          //setIsEnter(true); //в случае иных ошибок появится окошко
+          //setErrorReg(true);
+          console.log(`Упс, произошла ошибка: ${err}`);
+        })
+  }
+
+  function enter(email, password) {
+    apiAuth.enter(email, password)
+        .then((data) => {
+          if (data.token) { // если статус ответа false
+            //setIsEnter(true); //открываем всплывающее окошко
+            //setErrorReg(true); //меняем стейт, что есть ошибка
+            localStorage.setItem('jwt', data.token)
+            setIsLoggedIn(true)
+            console.log('Yes token yes')
+            history.push('/')
+
+          } else {
+            //setIsEnter(true); //если статус true, то все равно всплавает окошко
+            //setErrorReg(false); // но наличие ошибки false
+            history.push('/sign-in');
+          }
+        })
+        .catch((err) => {
+          //setIsEnter(true); //в случае иных ошибок появится окошко
+          //setErrorReg(true);
+          console.log(`Упс, произошла ошибка: ${err}`);
+        })
+  }
 
   const toggle = () => {
       setIsLoggedIn((prevLoggedIn) => { return !prevLoggedIn})
@@ -157,10 +204,10 @@ function App() {
                   setCards={setCards}
               />
               <Route path="/sign-up">
-                <Register />
+                <Register register={register}/>
               </Route>
               <Route path="/sign-in">
-                <Login />
+                <Login enter={enter} />
               </Route>
             </Switch>
             <InfoTooltip />

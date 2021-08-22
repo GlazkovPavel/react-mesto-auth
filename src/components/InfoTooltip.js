@@ -6,6 +6,7 @@ import fail from '../images/Unionfail.svg'
 export function InfoTooltip(props){
 
   const isLoggedIn = React.useContext(AuthContext)
+
   const handleText = () => {
     return isLoggedIn ? 'Что-то пошло не так! Попробуйте ещё раз.' : 'Вы успешно зарегистрировались!'
   }
