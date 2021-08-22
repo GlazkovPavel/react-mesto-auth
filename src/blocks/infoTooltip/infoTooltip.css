@@ -1,4 +1,6 @@
 .infoTooltip {
+  display: flex;
+  flex-direction: column;
   max-width: 430px;
   width: 100%;
   background-color: white;
@@ -8,5 +10,5 @@
   color: black;
   position: relative;
   box-sizing: border-box;
-  display: block;
+
 }

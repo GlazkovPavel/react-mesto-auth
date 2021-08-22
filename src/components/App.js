@@ -8,7 +8,6 @@ import EditProfilePopup from "./EditProfilePopup";
 import api from "../utils/api";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
-import {AuthContext} from "../contexts/AuthContext";
 import { Route, Switch, useHistory } from 'react-router-dom';
 import {Login} from "./Login";
 import {Register} from "./Register";
@@ -27,6 +26,8 @@ function App() {
     const [isLoading, setIsLoading] = React.useState(false)
     const [isLoggedIn, setIsLoggedIn] = React.useState(true)
     const [email, setEmail] = React.useState('')
+    const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false)
+    const [tooltipStatus, setToolTipStatus] = React.useState(false)
 
     const history = useHistory();
 
@@ -58,15 +59,15 @@ function App() {
   function register(email, password) {
     apiAuth.register(email, password)
         .then((res) => {
-          if (res.data._id) { // если статус ответа false
-            //setIsEnter(true); //открываем всплывающее окошко
-            //setErrorReg(true); //меняем стейт, что есть ошибка
+          if (res.data._id) {
+            setToolTipStatus(false)
+            setInfoTooltipOpen(true)
             history.push('/sign-in');
           }
         })
         .catch((err) => {
-          //setIsEnter(true); //в случае иных ошибок появится окошко
-          //setErrorReg(true);
+          setToolTipStatus(true)
+          setInfoTooltipOpen(true)
           console.log(`Упс, произошла ошибка: ${err}`);
         })
   }
@@ -74,22 +75,22 @@ function App() {
   function enter(email, password) {
     apiAuth.enter(email, password)
         .then((data) => {
-          if (data.token) { // если статус ответа false
-            //setIsEnter(true); //открываем всплывающее окошко
-            //setErrorReg(true); //меняем стейт, что есть ошибка
+          if (data.token) {
+            setToolTipStatus(false)
+            setInfoTooltipOpen(false)
             localStorage.setItem('jwt', data.token)
             setIsLoggedIn(true)
             history.push('/')
 
           } else {
-            //setIsEnter(true); //если статус true, то все равно всплавает окошко
-            //setErrorReg(false); // но наличие ошибки false
+            setToolTipStatus(true)
+            setInfoTooltipOpen(true)
             history.push('/sign-in');
           }
         })
         .catch((err) => {
-          //setIsEnter(true); //в случае иных ошибок появится окошко
-          //setErrorReg(true);
+          setToolTipStatus(true)
+          setInfoTooltipOpen(true)
           console.log(`Упс, произошла ошибка: ${err}`);
         })
   }
@@ -100,9 +101,6 @@ function App() {
     history.push('/sign-in');
   }
 
-  const toggle = () => {
-      setIsLoggedIn((prevLoggedIn) => { return !prevLoggedIn})
-  }
 
     const changeLoading = () =>{
       setIsLoading(true)
@@ -118,6 +116,7 @@ function App() {
         setEditProfilePopupOpen(false)
         setAddPlacePopupOpen(false)
         setImagePopupOpen(false)
+        setInfoTooltipOpen(false)
     }
 
     const handleEditProfileClick = () => {
@@ -201,9 +200,7 @@ function App() {
 
   return (
       <CurrentUserContext.Provider value={currentUser}>
-        <AuthContext.Provider value={isLoggedIn}>
           <div className="page">
-            <button onClick={toggle}>Toggle {isLoggedIn ? 'ON' : 'OFF'}</button>
             <Header signOut={signOut} email={email} />
             <Switch>
               <ProtectedRoute
@@ -217,6 +214,7 @@ function App() {
                   onCardDelete={handleCardDelete}
                   cards={cards}
                   setCards={setCards}
+                  isLoggedIn={isLoggedIn}
               />
               <Route path="/sign-up">
                 <Register register={register}/>
@@ -225,7 +223,12 @@ function App() {
                 <Login enter={enter} />
               </Route>
             </Switch>
-            <InfoTooltip />
+            <InfoTooltip
+                onClose={closeAllPopups}
+                isOpen={isInfoTooltipOpen}
+                overlay={overlayClick}
+                tooltipStatus={tooltipStatus}
+            />
             <AddPlacePopup
                 isLoading={isLoading}
                 onChangeLoading={changeLoading}
@@ -253,7 +256,6 @@ function App() {
             <ImagePopup overlay={overlayClick} isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
             <Footer />
           </div>
-        </AuthContext.Provider>
       </CurrentUserContext.Provider>
   );
 

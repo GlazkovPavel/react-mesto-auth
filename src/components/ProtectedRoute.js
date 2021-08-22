@@ -1,9 +1,8 @@
 import React from "react";
 import {Route, Redirect} from "react-router-dom";
-import {AuthContext} from "../contexts/AuthContext";
 
-export const ProtectedRoute = ({ component: Component ,...restProps}) => {
-  const isLoggedIn = React.useContext(AuthContext)
+export const ProtectedRoute = ({ isLoggedIn, component: Component ,...restProps}) => {
+
   if(!isLoggedIn){
     return <Redirect to="/sign-in"></Redirect>
   }
