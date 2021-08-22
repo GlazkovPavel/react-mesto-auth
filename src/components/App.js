@@ -163,9 +163,7 @@ function App() {
                 <Login />
               </Route>
             </Switch>
-
             <InfoTooltip />
-
             <AddPlacePopup
                 isLoading={isLoading}
                 onChangeLoading={changeLoading}
