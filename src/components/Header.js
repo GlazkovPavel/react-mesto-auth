@@ -4,7 +4,7 @@ import { Route, Link} from "react-router-dom";
 
 
 
-function Header() {
+function Header(props) {
 
   return(
         <header className="header">
@@ -17,8 +17,8 @@ function Header() {
           </Route>
           <Route exact path="/">
             <div className="header__container">
-              <p className="header__email">Email</p>
-              <button className="header__button">Выйти</button>
+              <p className="header__email">{props.email}</p>
+              <button className="header__button" onClick={props.signOut}>Выйти</button>
             </div>
           </Route>
         </header>

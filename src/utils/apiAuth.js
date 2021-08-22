@@ -31,7 +31,7 @@ export const enter = (email, password) => {
       .then(checkResponse)
 }
 
-export const getUserData = (token) => {
+export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {

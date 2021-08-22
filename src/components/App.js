@@ -26,19 +26,41 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(false)
     const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+    const [email, setEmail] = React.useState('')
 
     const history = useHistory();
+
+    React.useEffect(() => {
+      const jwt = localStorage.getItem('jwt');
+      if(jwt){
+        apiAuth.getContent(jwt)
+            .then((res) => {
+              setIsLoggedIn(true);
+              setEmail(res.data.email);
+              history.push('/')
+            })
+            .catch(err => console.error(err))
+      }
+    }, [history])
+
+  React.useEffect(() => {
+    api.getUserInfo()
+        .then(res => {setCurrentUser(res)})
+        .catch(err => {console.error(err)})
+  }, [])
+
+  React.useEffect(() => {
+    api.getInitialCards()
+        .then(res => {setCards(res)})
+        .catch(err => {console.error(err)})
+  }, [])
 
   function register(email, password) {
     apiAuth.register(email, password)
         .then((res) => {
-          if (!res.ok) { // если статус ответа false
+          if (res.data._id) { // если статус ответа false
             //setIsEnter(true); //открываем всплывающее окошко
             //setErrorReg(true); //меняем стейт, что есть ошибка
-            console.log('ошибка отправки регистрации')
-          } else {
-            //setIsEnter(true); //если статус true, то все равно всплавает окошко
-            //setErrorReg(false); // но наличие ошибки false
             history.push('/sign-in');
           }
         })
@@ -57,7 +79,6 @@ function App() {
             //setErrorReg(true); //меняем стейт, что есть ошибка
             localStorage.setItem('jwt', data.token)
             setIsLoggedIn(true)
-            console.log('Yes token yes')
             history.push('/')
 
           } else {
@@ -73,6 +94,12 @@ function App() {
         })
   }
 
+  function signOut(){
+    localStorage.removeItem('jwt');
+    setIsLoggedIn(false);
+    history.push('/sign-in');
+  }
+
   const toggle = () => {
       setIsLoggedIn((prevLoggedIn) => { return !prevLoggedIn})
   }
@@ -80,18 +107,6 @@ function App() {
     const changeLoading = () =>{
       setIsLoading(true)
   }
-
-    React.useEffect(() => {
-      api.getUserInfo()
-          .then(res => {setCurrentUser(res)})
-          .catch(err => {console.error(err)})
-    }, [])
-
-    React.useEffect(() => {
-      api.getInitialCards()
-          .then(res => {setCards(res)})
-          .catch(err => {console.error(err)})
-    }, [])
 
     const handleCardClick = (data) => {
       setImagePopupOpen(true)
@@ -189,7 +204,7 @@ function App() {
         <AuthContext.Provider value={isLoggedIn}>
           <div className="page">
             <button onClick={toggle}>Toggle {isLoggedIn ? 'ON' : 'OFF'}</button>
-            <Header />
+            <Header signOut={signOut} email={email} />
             <Switch>
               <ProtectedRoute
                   exact path="/"
