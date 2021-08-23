@@ -35,13 +35,14 @@ function App() {
       const jwt = localStorage.getItem('jwt');
       if(jwt){
         apiAuth.getContent(jwt)
-            .then(() => {
+            .then((res) => {
               setIsLoggedIn(true);
+              setEmail(res.data.email);
               history.push('/')
             })
             .catch(err => console.error(err))
       }
-    }, [])
+    }, [history])
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -62,7 +63,6 @@ function App() {
             setToolTipStatus(false)
             setInfoTooltipOpen(true)
             history.push('/sign-in');
-            setEmail(res.data.email);
           }
         })
         .catch((err) => {
@@ -81,6 +81,7 @@ function App() {
             localStorage.setItem('jwt', data.token)
             setIsLoggedIn(true)
             history.push('/')
+            setEmail(email)
 
           } else {
             setToolTipStatus(true)

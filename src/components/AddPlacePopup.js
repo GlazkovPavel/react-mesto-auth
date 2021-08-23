@@ -38,7 +38,7 @@ function AddPlacePopup(props){
           <input className="popup__item popup__item_title_add" value={name}
                  onChange={handleNameChange} type="text" name="name" placeholder="Название" required minLength="2" maxLength="30" />
             <span className="text-input-name-error popup__input-error"></span>
-            <input className="popup__item popup__item_type_job" id="text-input-job" value={link} onChange={handleLinkChange}
+            <input className="popup__item popup__item_type_job" value={link} onChange={handleLinkChange}
                    type="url" name="link" placeholder="Ссылка на картинку" required minLength="2" maxLength="200" />
             <span className="text-input-job-error popup__input-error"></span>
         </PopupWithForm>
