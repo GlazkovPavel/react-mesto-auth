@@ -24,7 +24,7 @@ function App() {
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [currentUser, setCurrentUser] = React.useState({})
     const [isLoading, setIsLoading] = React.useState(false)
-    const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false)
     const [email, setEmail] = React.useState('')
     const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false)
     const [tooltipStatus, setToolTipStatus] = React.useState(false)
@@ -35,14 +35,13 @@ function App() {
       const jwt = localStorage.getItem('jwt');
       if(jwt){
         apiAuth.getContent(jwt)
-            .then((res) => {
+            .then(() => {
               setIsLoggedIn(true);
-              setEmail(res.data.email);
               history.push('/')
             })
             .catch(err => console.error(err))
       }
-    }, [history])
+    }, [])
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -63,6 +62,7 @@ function App() {
             setToolTipStatus(false)
             setInfoTooltipOpen(true)
             history.push('/sign-in');
+            setEmail(res.data.email);
           }
         })
         .catch((err) => {
@@ -85,7 +85,6 @@ function App() {
           } else {
             setToolTipStatus(true)
             setInfoTooltipOpen(true)
-            history.push('/sign-in');
           }
         })
         .catch((err) => {
