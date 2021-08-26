@@ -38,7 +38,7 @@ function App() {
             .then((res) => {
               setIsLoggedIn(true);
               setEmail(res.data.email);
-              history.push('/')
+              history.push('/react-mesto-auth/')
             })
             .catch(err => console.error(err))
       }
@@ -98,7 +98,7 @@ function App() {
   function signOut(){
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
-    history.push('/sign-in');
+    history.push('/react-mesto-auth/sign-in');
   }
 
 
