@@ -2,7 +2,7 @@
   "name": "react-mesto-auth",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://glazkovpavel.github.io/react-mesto-auth/",
+  "homepage" : "https://mesto.glazkovpavel.nomoredomains.club/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",

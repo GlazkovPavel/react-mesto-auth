@@ -38,7 +38,7 @@ function App() {
             .then((res) => {
               setIsLoggedIn(true);
               setEmail(res.data.email);
-              history.push('/react-mesto-auth/')
+              history.push('/')
             })
             .catch(err => console.error(err))
       }
@@ -62,7 +62,7 @@ function App() {
           if (res.data._id) {
             setToolTipStatus(false)
             setInfoTooltipOpen(true)
-            history.push('/react-mesto-auth/sign-in');
+            history.push('/sign-in');
           }
         })
         .catch((err) => {
@@ -80,7 +80,7 @@ function App() {
             setInfoTooltipOpen(false)
             localStorage.setItem('jwt', data.token)
             setIsLoggedIn(true)
-            history.push('/react-mesto-auth/')
+            history.push('/')
             setEmail(email)
 
           } else {
@@ -98,7 +98,7 @@ function App() {
   function signOut(){
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
-    history.push('/react-mesto-auth/sign-in');
+    history.push('/sign-in');
   }
 
 
@@ -204,7 +204,7 @@ function App() {
             <Header signOut={signOut} email={email} />
             <Switch>
               <ProtectedRoute
-                  exact path="/react-mesto-auth/"
+                  exact path="/"
                   component={Main}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -216,10 +216,10 @@ function App() {
                   setCards={setCards}
                   isLoggedIn={isLoggedIn}
               />
-              <Route path="/react-mesto-auth/sign-up">
+              <Route path="/sign-up">
                 <Register register={register}/>
               </Route>
-              <Route path="/react-mesto-auth/sign-in">
+              <Route path="/sign-in">
                 <Login enter={enter} />
               </Route>
             </Switch>
