@@ -32,7 +32,7 @@ export function Register(props) {
                />
         </form>
         <button className="login__button" type="submit" onClick={handleSubmit}>Зарегистрироваться</button>
-        <Link className="login__link" to="/sign-in">Уже зарегистрированы? Войти</Link>
+        <Link className="login__link" to="/signin">Уже зарегистрированы? Войти</Link>
       </div>
   )
 }

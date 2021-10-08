@@ -62,7 +62,7 @@ function App() {
           if (res.data._id) {
             setToolTipStatus(false)
             setInfoTooltipOpen(true)
-            history.push('/sign-in');
+            history.push('/signin');
           }
         })
         .catch((err) => {
@@ -98,7 +98,7 @@ function App() {
   function signOut(){
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
-    history.push('/sign-in');
+    history.push('/signin');
   }
 
 
@@ -216,10 +216,10 @@ function App() {
                   setCards={setCards}
                   isLoggedIn={isLoggedIn}
               />
-              <Route path="/sign-up">
+              <Route path="/signup">
                 <Register register={register}/>
               </Route>
-              <Route path="/sign-in">
+              <Route path="/signin">
                 <Login enter={enter} />
               </Route>
             </Switch>
