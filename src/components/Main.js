@@ -23,7 +23,7 @@ function Main(props){
 
             <section className="element">
                 <ul className="element__grid">
-                  {props.cards.map(card =>(
+                  {props.cards.data.map(card =>(
                       <Card
                         key={card._id}
                         card={card}

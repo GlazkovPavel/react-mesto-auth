@@ -38,7 +38,8 @@ function App() {
             .then((res) => {
               setIsLoggedIn(true);
               setEmail(res.data.email);
-              history.push('/')
+              setCurrentUser(res)
+              history.push('/users/me')
             })
             .catch(err => console.error(err))
       }
@@ -80,7 +81,7 @@ function App() {
             setInfoTooltipOpen(false)
             localStorage.setItem('jwt', data.token)
             setIsLoggedIn(true)
-            history.push('/')
+            history.push('/users/me')
             setEmail(email)
 
           } else {
@@ -204,7 +205,7 @@ function App() {
             <Header signOut={signOut} email={email} />
             <Switch>
               <ProtectedRoute
-                  exact path="/"
+                  exact path="/users/me"
                   component={Main}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
